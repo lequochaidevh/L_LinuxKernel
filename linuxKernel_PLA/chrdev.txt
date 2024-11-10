@@ -1,0 +1,30 @@
+
+<5 STEPS CREATE DEVICE>
+
+B1: major + minor
+B2: alloc struct device
+B3: init info device {
+	
+	owner
+	fops
+	device }
+B4: regis device for OS
+B5: init device file
+
+echo string > /dev/myDevice
+cat /dev/myDevice
+
+dmesg -C
+
+<4 STEPS DESTROY DEVICE>
+ -
+ -
+ -
+ -
+ 
+ 
+DELAY DRIVER : msleep(int);
+
+
+
+

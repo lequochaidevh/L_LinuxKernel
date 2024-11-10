@@ -1,0 +1,37 @@
+- polling, interrupt, exception
+
+- Interrupt: hw interrupt; sw interrupt; ignore interrupt; CAN NOT ignore interrupt
+ (NOT put 
+ - interrupt into interrupt bc it will make ERROR
+ - ALLOCATE MEMORY -> sometime make msleep() -> hanle by GFP_AUTOMIC
+ 	(sleep when Collection of memory Fragments)
+ - Printk, LOG -> allways make msleep()
+ - DELAY()
+ )
+
+<2 STEPS CREATE IRQF>
+ - make function irq
+ - request ()
+<>
+ - free()
+
+<>
+
+cat /proc/interrupts
+
+ interruptLine 	|	CPU0	CPU1	CPU 2	...	| |	interruptType	|	kernelModuleActiveThisIRQ
+		  	|					| |			|
+		  	|	numbers of active intterupt	| |			|	(timer, rtc0, ...)
+
+<>
+3 data return from irqhandler
+
+<>
+TOP HALF --- BOTTOM HALF
+
+<4 TYPE DISABLING INTERRUPT>
+
+
+<3 TYPE CHECKING INTERRUPT CONTEXT>
+
+

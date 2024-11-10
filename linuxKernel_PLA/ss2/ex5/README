@@ -1,0 +1,24 @@
+description :
+	write a program install(and uninstall) for a package  
+sequense program :
+
+	1. Go Make de build source code
+	2. Chuong trinh setup phai lam nhung viec sau:
+	    2.1 Tao 1 file text voi duong dan /etc/foo.conf
+	    2.2 Copy libfoo.so vao thu muc /usr/bin
+	    2.3 Copy file test vao thu muc bin
+	3. Cd vao thu muc khac va go lenh "test" de kiem tra ket qua
+
+how to run ?
+	1. "make all"
+	2. sudo cp libfoo.so /usr/bin
+	2. "./test1"
+	
+	
+gcc -c -Wall -Werror -fpic foo.c -> make foo.o
+gcc -shared -o libfoo.so foo.o -> make libfoo.so
+gcc -L./ -Wl,-rpath=/usr/bin -Wall -o test1 main.c -lfoo ->make test1
+
+https://sourceware.org/binutils/docs-2.16/ld/Options.html
+
+https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
