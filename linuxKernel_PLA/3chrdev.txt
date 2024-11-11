@@ -26,5 +26,10 @@ dmesg -C
 DELAY DRIVER : msleep(int);
 
 
+<CONFIG HARWARE>
+dev_ioctl(struct file* , unsign int cmd, unsign long arg){
+
+// unsign long like char*
+}  
 
 
