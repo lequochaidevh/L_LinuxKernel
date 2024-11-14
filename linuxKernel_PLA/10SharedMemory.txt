@@ -1,0 +1,53 @@
+<SHARED MEMORY>
+
+	shm API
+	Old API, support for all Unix like system
+	Mmap
+	New API, some Unix like system doesn’t support.
+	Can use to write in file.
+
+						REFERENCE		shm API
+									Sequence diagram to share memory via shm API
+									generate a unique key from string
+										#include <sys/types.h>
+										#include <sys/ipc.h>
+										key_t ftok(const char *pathname, int proj_id);
+											convert a pathname and a project identifier to a key
+									Alloc memory from key
+										int shmget(key_t key, size_t size, int shmflg);
+											Allocate and return memory address for share memory
+										IPC_CREAT
+										PROT_READ | PROT_WRITE
+										Permission like a file
+									Map shared memory to process address space
+										void *shmat(int shmid, const void *shmaddr, int shmflg);
+										shmaddr should be NULL
+										SHM_RDONLY
+									Unmap shared memory in process address space
+										int shmdt(const void *shmaddr);
+									Destroy shared memory
+										int shmctl(int shmid, int cmd, struct shmid_ds *buf);
+										IPC_RMID
+
+	Create file fd	-> Set memory size ->  Map shared mem to process  ->  Unmap shared mem  ->  remove the shared memory
+	
+#include <sys/shm.h>
+	<Create file fd>
+		int shm_fd = shm_open(const char *name, O_CREAT | O_RDRW, 0666)        /* open(/dev/mem) to map physical memory */	
+	<Set memory size>
+		int ftruncate(int fd, off_t length)
+			NOTE : /dev/mem or file existed before NOT set memory size for it.
+	<Map shared memory>	
+		void *mmap(void *addr, size_t length, int prot, int flags, int fd, off_t offset)
+			addr is start VIRTUAL address 2^64bits
+			prot SETTING permission   <= (alway) 0666
+			flag is attribute
+			offset 0(~addr) -> 0x1000(physic addr) + 0x100(offset in physicAddr) = 0x1100
+	<Unmap shared mem>		
+		int munmap(void *addr, size_t length)
+	<Remove the shared memory remove the shared memory>
+		int shm_unlink(const char *name)
+		
+
+	
+	

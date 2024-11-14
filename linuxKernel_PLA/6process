@@ -17,7 +17,7 @@ int execl(const char *pathname, const char *arg0, .../*(char*)0*/)
 ps -aux
 
 <Zombie process> NOT kill
-pid_t wait(int *wstatus) -> acccept signal TRY
+pid_t wait(int *wstatus) -> acccept signal CHILD
 wstatus : is ErrorNumber of children process
 
 <RunCOMMAND_LINE in C>

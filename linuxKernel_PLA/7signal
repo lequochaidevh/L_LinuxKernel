@@ -1,0 +1,60 @@
+
+
+signal 
+
+<signal can ignore
+no ignore
+signal no control
+signal can control by handler func>
+
+<Signal Table> :32unit, init default when start
+
+
+find . -name sched.h
+
+
+task_struct {
+
+	...
+	< signal handlers > 
+	struct signal_struct *signal;
+	struct sighand_struct *sighand;
+	
+	struct signpendding;
+}
+
+ - sighander_t signal(int signum, sighandler_t handler)	
+ - void sig_nameHandler( int signo) 
+ 
+<send signal>
+	int kill(pid_t pid, int signo)
+	Permission to send a signal
+	int raise(int signo)
+	kill command
+	
+<SOME BASIC SIGNAL>
+-SIGCHLD
+-SIGILL
+-SIGINT
+-SIGKILL
+-SIGSEGV (segment)
+
+<ignore 1 signal>
+- signal(signal_number, SIG_IGN);
+- block/unblock signal
+
+
+	-> 	MASK 32 bit			-> signal TABLE
+		action in MASK (Block 1)
+
+		int sigfillset(sigset_t *set)
+		int sigemptyset(sigset_t *set);
+		int sigaddset(sigset_t *set, int signo)
+		int sigdelset(sigset_t *set, int signo)
+	
+		int sigprocmask(...3 ) ->update
+		
+<check signal pending when block>
+
+
+

@@ -1,0 +1,21 @@
+<SOCKET> this is a file have type endpoint
+
+domain 
+type
+protocal
+
+big endian->FOR NETWOLK / litle endian
+
+uint32_t htonl()
+uint16_t ntohs()
+
+
+
+<insert IP>
+	int bind(...)
+
+<Client>
+	int connect(...)
+
+<Server>
+	int listen(...)

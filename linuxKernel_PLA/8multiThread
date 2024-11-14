@@ -1,0 +1,20 @@
+THREAD ______________save memory more than Process 
+
+
+CREATE\
+	int pthread_create(...4)
+	
+EXIT 
+	pthread_exit
+	return at start main
+	pthread_cancel
+	
+ gcc -o name name.c -lpthread
+ 
+ mutex : 1 key
+ 
+ 
+ semaphore : many key
+ 
+ 
+ dead lock: 2 threads for 2 keys

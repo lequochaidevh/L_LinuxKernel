@@ -1,0 +1,113 @@
+	dtsi files are included files, while .dts
+	files are final
+
+	arch/platform/boot/dts
+	scripts/dtc
+	
+	.dts + .dtsi = .dtb
+	
+
+<Device tree building>
+	files dtsi : general info of SoC
+	files dts  : private info of board
+	create .dtb
+	make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- make dtbs	
+	dtc -I dtb -O dtsarch/arm/boot/dts imx6dl-sabrelite.dtb >path/to/my_devicetree.dts
+	
+
+All functions are located at include/Linux/of.h
+	Getting a reference to the clock
+		clk_get(&pdev->dev, NULL)
+	Getting the I/O registers resource
+		platform_get_resource(pdev, IORESOURCE_MEM, 0)
+	Check some custom property
+		struct device_node *np = pdev->dev.of_node
+	of_get_property(np, "fsl,uart-has-rtscts", NULL)
+
+	
+Standard syntax:
+	static const struct of_device_id NAM_MATCH__[] = {...}
+	1> static struct platform_driver NAME___{...}
+	static int NAME__probe(struct platform_device *pdev)
+	2> static __init NAME_t_probe(struct platform_device *pdev){}
+	
+	module_platform_driver_probe(NAME___,NAME_t_probe) //1> 2>
+Custom syntax:
+		ex: one-int-property = <197>; int-list-property = <1350000 0x54dae47 1250000 1200000>;
+	int of_property_read_u32_array(const struct device_node *np, const char *propname, u32 *out_values, size_tsz);
+		np = pdev->dev->of_node
+		propname = int-list-property
+		
+		
+support by driver code	systax:
+	Documentation/devicetree/bindings
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+			<REFERENCE>	
+			https://events.static.linuxfound.org/sites/events/files/slides/petazzoni-device-tree-dummies.pdf
+
+				sumary:
+					useDTB:
+						r2 <pointer to DTB>
+						r1 dont care
+						RAM : uImage
+					
+					arch/arm/boot/dts
+					.dts files for board-level definitions
+					.dtsi files for included files, generally containing SoC-level definitions
+					
+					Source code located in scripts/dtc
+					
+					arch/arm/boot/dts/Makefile		
+					
+					Getting a reference to the clock described by the clocks property
+						s->clk = clk_get(&pdev->dev, NULL);
+					Getting the I/O registers resource described by the reg property
+						r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+					Getting the interrupt described by the interrupts property
+						s->irq = platform_get_irq(pdev, 0);
+					Get a DMA channel described by the dmas property
+						s->rx_dma_chan = dma_request_slave_channel(s->dev, "rx");
+						s->tx_dma_chan = dma_request_slave_channel(s->dev, "tx");
+					Check some custom property struct device_node *np = pdev->dev.of_node;
+						if (of_get_property(np, "fsl,uart-has-rtscts", NULL))
+						
+					Device Tree files are not monolithic, they can be split in several files, including each other.
+					I .dtsi files are included files, while .dts files are final Device Trees
+					I Typically, .dtsi will contain definition of SoC-level information (or sometimes definitions common to several almost identical boards).
+					I The .dts file contains the board-level information.
+					I The inclusion works by overlaying the tree of the including file over the tree of the included file.
+					I Inclusion using the DT operator /include/, or since a few kernel releases, the DTS go through the C preprocessor, so
+					#include is recommended.	
+			
+			
+			
+		
