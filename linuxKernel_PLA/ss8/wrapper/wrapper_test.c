@@ -15,12 +15,7 @@ void *test(void *st)
 void *test2(void *st)
 {
 	char *s = (char *)st;	
-	read_file(s, 100);
-	//puts(s);// make sleep
-	pthread_mutex_lock(&lock);		
-	puts(s); // case temp NOT GOOD
-	pthread_mutex_unlock(&lock);		
-	stChar = st;
+	read_file(s, 100);	
 	return (void*)NULL;
 }
 
@@ -38,11 +33,9 @@ int main()
 	open_file_for_read();
 	pthread_create(&th1 , NULL , test2 , at); //thread not save pointer
 	pthread_create(&th2 , NULL , test2 , at); //thread not save pointer
-	
-	
-	//read_file(at, 100); //can save pt at test2(at);puts(at);
-	
+		
 	pthread_join(th1 , NULL);
 	pthread_join(th2 , NULL);
+	pthread_mutex_destroy(&lock);
 	destroy_wrapper();
 }

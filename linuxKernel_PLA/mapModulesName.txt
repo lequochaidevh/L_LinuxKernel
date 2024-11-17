@@ -37,6 +37,7 @@
 	7_practive_2 : set block BY mask for signal 
 
 <8>MULTI THREAD
+	semaphore: block with serveral keys
 	test_multithread: calc time parallel 4 thread
 	wrapper: function read write FILE (this can make sleep program)
 <9>SOCKET
@@ -51,3 +52,11 @@
 <11> DEVICE TREE
 	led_deviceTree
 
+
+
+<19> ADVANCED MAKEFILE & Basic UBOOT make menu
+
+<20> YOCTO PROJECT
+
+
+	add menu Kconfig

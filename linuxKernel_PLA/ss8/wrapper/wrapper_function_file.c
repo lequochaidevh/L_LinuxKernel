@@ -38,7 +38,7 @@ int read_file(char *buffer , int nsize )
 	*buffer = '\0';
 	buffer = start;
 	pthread_mutex_unlock(&lock);		
-	//puts(buffer);
+	puts(buffer);// need fork to print
 	return 1;
 }
 int write_file(char *buffer , int nsize)
@@ -57,7 +57,7 @@ int write_file(char *buffer , int nsize)
 int destroy_wrapper()
 {
 	fclose(fp);
-	pthread_mutex_destroy(&lock);
+	//pthread_mutex_destroy(&lock);
 	return 0;
 }
 
