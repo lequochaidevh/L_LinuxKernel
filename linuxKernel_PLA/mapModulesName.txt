@@ -41,7 +41,8 @@
 	test_multithread: calc time parallel 4 thread
 	wrapper: function read write FILE (this can make sleep program)
 <9>SOCKET
-
+	send_file: send Hello
+	
 <10>SHARED MEMORY
 
 	mmap_api_example : reader writer to share file memory
