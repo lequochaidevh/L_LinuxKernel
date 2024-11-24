@@ -1,0 +1,88 @@
+static struct platform_driver fec_driver = {
+	.driver
+	.... }
+	
+static const struct of_device_id fec_dt_ids[] = {
+	{ .compatible = "fsl,imx25-fec", .data = &fec_devtype[IMX25_FEC], },
+	... }
+	
+static int fec_probe(struct platform_device *pdev) {
+	
+	/* Init network device */
+	...
+	SET_NETDEV_DEV(ndev, &pdev->dev);
+	
+	/* setup board info structure */
+	fep = netdev_priv(ndev);
+	
+	of_id = of_match_device(fec_dt_ids, &pdev->dev);
+	fep->netdev = ndev;
+	fep->num_rx_queues = num_rx_qs;
+	fep->num_tx_queues = num_tx_qs;...
+	
+	ret = devm_request_irq(&pdev->dev, irq, fec_enet_interrupt,
+				       0, pdev->name, ndev);
+	...
+}
+
+static const struct net_device_ops fec_netdev_ops = {
+	.ndo_open		= fec_enet_open,
+	.ndo_stop		= fec_enet_close,
+	.ndo_start_xmit		= fec_enet_start_xmit,...}
+	
+static netdev_tx_t fec_enet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+{
+	struct fec_enet_private *fep = netdev_priv(ndev);
+	int entries_free;
+	unsigned short queue;
+	struct fec_enet_priv_tx_q *txq;
+	struct netdev_queue *nq; 
+	int ret;
+
+	queue = skb_get_queue_mapping(skb);
+	txq = fep->tx_queue[queue];
+	nq = netdev_get_tx_queue(ndev, queue); ...}
+	
+oldAPI va newAPI
+
+static irqreturn_t fec_enet_interrupt(int irq, void *dev_id)
+{
+	struct net_device *ndev = dev_id;
+	struct fec_enet_private *fep = netdev_priv(ndev);
+	uint int_events;
+	irqreturn_t ret = IRQ_NONE;
+
+	int_events = readl(fep->hwp + FEC_IEVENT);
+	writel(int_events, fep->hwp + FEC_IEVENT);
+	fec_enet_collect_events(fep, int_events);
+
+	if ((fep->work_tx || fep->work_rx) && fep->link) {
+		ret = IRQ_HANDLED;
+		if (napi_schedule_prep(&fep->napi)) { // -> 
+			/* Disable the NAPI interrupts */
+			writel(FEC_NAPI_IMASK, fep->hwp + FEC_IMASK);
+			__napi_schedule(&fep->napi);
+		}
+	}	
+		...}
+		
+static int fec_enet_rx_napi(struct napi_struct *napi, int budget)
+{
+	struct net_device *ndev = napi->dev;
+	struct fec_enet_private *fep = netdev_priv(ndev);
+	int pkts;
+
+	pkts = fec_enet_rx(ndev, budget);
+
+	fec_enet_tx(ndev); // ACK
+
+	if (pkts < budget) {
+		napi_complete_done(napi, pkts);
+		writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
+	}
+	return pkts;
+}
+
+
+
+
